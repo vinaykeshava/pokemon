@@ -25,7 +25,6 @@ export default function Bookmark() {
     }, [])
 
     const removeFromBookmark = (id) => {
-        console.log("remove  bookmark");
         localStorage.removeItem("pokemon/" + id);
         setPokemons((prevPokemons) => prevPokemons.filter((pokemon) => pokemon !== "pokemon/" + id));
     }

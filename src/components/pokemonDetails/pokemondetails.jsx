@@ -35,13 +35,11 @@ function PokemonsDetails() {
     }, [id]);
 
     const addToBookmark = () => {
-        console.log("set bookmark");
         localStorage.setItem("pokemon/" + id, JSON.stringify(list));
         setbookmark((prevbookmark) => !prevbookmark);
     }
 
     const removeFromBookmark = () => {
-        console.log("remove  bookmark");
         localStorage.removeItem("pokemon/" + id);
         setbookmark((prevbookmark) => !prevbookmark);
     }
