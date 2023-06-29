@@ -38,11 +38,6 @@ export default function PokemonList() {
         }, 2000)
     }
 
-    // const handleOnClick = (url) => {
-    //     console.log("url", url);
-    //     window.open(url, "_blank")
-    // }
-
     return (
         <div className={classes.root}>
             <Typography variant="h3">POKEMON NAMES</Typography>

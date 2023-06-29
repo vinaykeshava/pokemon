@@ -7,7 +7,7 @@ export default makeStyles()({
         marginTop: 45,
     },
     container:{
-        background: '#2e97ffc2',
+        position: 'relative',
         padding: 10,
         border: '2px solid black',
         height: 'fit-Content',

@@ -4,9 +4,10 @@ import useStyles from "./search-styles";
 import { useDispatch } from 'react-redux'
 import TextField from "@mui/material/TextField";
 // import { fetchPokemonByName } from "../Redux/redux-thunks"
-import { Card, CardContent, CardHeader, Grid, Typography } from "@mui/material";
+import { Button, Card, CardContent, CardHeader, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useNavigate } from "react-router-dom";
 
 export default function Search() {
 
@@ -14,6 +15,8 @@ export default function Search() {
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState("");
     const { classes } = useStyles();
+
+    const navigate = useNavigate();
 
     const onSearchChange = (event) => {
         setSearch(event.target.value);
@@ -26,8 +29,8 @@ export default function Search() {
         setTimeout(() => {
             axios.get(`https://pokeapi.co/api/v2/pokemon/${search}`)
                 .then(response => {
-                    console.log("resp -> ", response.data);
                     setPokemon(response.data)
+                    navigate('/pokemon/' + response.data.name)
                 })
                 .catch(error => {
                     if (error.response && error.response.status === 404) {
@@ -44,37 +47,35 @@ export default function Search() {
     }
 
     return (
-        <Grid className={classes.container} container justifyContent='center' flexDirection='column' alignItems='center' spacing={2}>
-            <Grid item>
-                <form onSubmit={handleSearch}>
-                    <TextField
-                        id="outlined-required"
-                        label="Search"
-                        placeholder="pikachu"
-                        onChange={onSearchChange}
-                    />
-                </form>
-            </Grid>
-
-
-            {loading ?
-                (<Grid item>
-                    <CircularProgress />
-                </Grid>
-                ) : null
-            }
-
-            {Object.keys(pokemon).length === 0 ?
+        <Grid container className={classes.root} justifyContent='center' alignItems='center'>
+            <Grid className={classes.container} container justifyContent='center' flexDirection='column' alignItems='center' spacing={2}>
                 <Grid item>
-                    <Typography variant="h3">Search to get pokemon details</Typography>
-                </Grid> : null
-            }
+                    <form onSubmit={handleSearch}>
+                        <TextField
+                            id="outlined-required"
+                            label="Search"
+                            placeholder="pikachu"
+                            onChange={onSearchChange}
+                        />
+                        <Button variant="contained" type="submit" className={classes.button}>Search</Button>
+                    </form>
+                </Grid>
 
-            {Object.keys(pokemon).length === 0 ? null :
-                < div >
-                    <pre> {JSON.stringify(pokemon, null, 2)}</pre>
-                </div >
-            }
-        </Grid >
+
+                {loading ?
+                    (<Grid item>
+                        <CircularProgress />
+                    </Grid>
+                    ) : null
+                }
+
+                {Object.keys(pokemon).length === 0 ?
+                    <Grid item>
+                        <Typography variant="h3">Search to get pokemon details</Typography>
+                    </Grid> : null
+                }
+
+            </Grid >
+        </Grid>
     )
 }

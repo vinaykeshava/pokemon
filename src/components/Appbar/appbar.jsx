@@ -25,7 +25,7 @@ export default function AppBar() {
     navigate('/list')
   }
   const routeToBookmark = () => {
-    navigate('/bookmark')
+    navigate('/bookmarks')
   }
 
   return (

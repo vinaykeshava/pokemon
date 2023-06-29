@@ -5,26 +5,46 @@ import SendIcon from '@mui/icons-material/Send';
 import api_individual from '../../services/apiIndividual';
 import useStyles from './pokemondetails-styles'
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
-import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdd';
+import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 
 
 function PokemonsDetails() {
     const { id } = useParams()
 
     const [list, setList] = useState([]);
+    const [bookmark, setbookmark] = useState(false);
     const [error, setError] = useState(!id);
 
     const { classes } = useStyles();
 
     useEffect(() => {
-        console.log("id", id);
-        api_individual.get(id).then(({ data }) => {
-            setList(data)
-        })
-            .catch(() => {
-                setError(true)
+        const pokemon = localStorage.getItem("pokemon/" + id)
+        if (pokemon === null) {
+            setbookmark(false)
+            api_individual.get(id).then(({ data }) => {
+                setList(data)
             })
+                .catch(() => {
+                    setError(true);
+                })
+        }
+        else {
+            setbookmark(true);
+            setList(JSON.parse(pokemon));
+        }
     }, [id]);
+
+    const addToBookmark = () => {
+        console.log("set bookmark");
+        localStorage.setItem("pokemon/" + id, JSON.stringify(list));
+        setbookmark((prevbookmark) => !prevbookmark);
+    }
+
+    const removeFromBookmark = () => {
+        console.log("remove  bookmark");
+        localStorage.removeItem("pokemon/" + id);
+        setbookmark((prevbookmark) => !prevbookmark);
+    }
 
     return (
         <>
@@ -159,6 +179,14 @@ function PokemonsDetails() {
                                     )
                                 })}
                             </Grid>
+                        </Grid>
+                    </Grid>
+
+                    <Grid container width='2vw'>
+                        <Grid item>
+                            <Box>
+                                {bookmark ? < BookmarkAddedIcon onClick={removeFromBookmark} fontSize='large' /> : < BookmarkAddIcon onClick={addToBookmark} fontSize='large' />}
+                            </Box>
                         </Grid>
                     </Grid>
                 </Grid>
