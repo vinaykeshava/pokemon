@@ -56,10 +56,11 @@ export default function PokemonList() {
                         {pokemons.map((pokemon) => {
                             return (
                                 <Grid item key={pokemon.url} >
-                                    <Link to={'/pokemon/'+pokemon.name} className={classes.link}>
-                                    <Box key={pokemon.url} className={classes.box} >
-                                        <Typography variant="body1" className={classes.typography}>{pokemon.name}</Typography>
-                                    </Box>
+                                    <Link to={'/pokemon/' + pokemon.name} className={classes.link}>
+                                        <Box key={pokemon.url} className={classes.box} >
+                                            <img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.url.split('/')[6]}.png`} alt={pokemon.name} className={classes.image} />
+                                            <Typography variant="body1" className={classes.typography}>{pokemon.name}</Typography>
+                                        </Box>
                                     </Link>
                                 </Grid>
                             )
